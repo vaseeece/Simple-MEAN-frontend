@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-sm navbar-light navbar-color">
+  <div class="container-fluid">
+    <a class="navbar-brand">
+      participants Leaderboard
+    </a>
+    <div class="d-flex">
+      <input class="form-control mr-sm-2" type="text" placeholder=" new team name" aria-label="Search"
+        [(ngModel)]="newTeamName">
+      <button class="btn btn-secondary" (click)="addNewTeam(newTeamName)" type="submit">Add</button>
+    </div>
+    <div class="d-flex">
+      <input class="form-control mr-sm-2" type="text" placeholder="team name or score" aria-label="Search"
+        [(ngModel)]="searchParam">
+      <button class="btn btn-secondary" (click)="onSearch(searchParam)" type="submit">Search</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container top-position">
+
+  <div *ngIf="dataFound">
+    <label for="sel1">Results per page:</label>
+    <select class="btn btn-light" id="sel1" (change)="dropDownHandler($event)">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+    </select>
+  </div>
+
+  <table class="table table-striped top-position" *ngIf="dataFound">
+    <thead>
+      <tr>
+        <th (click)="sort('team_name')">Team Name&nbsp;<i class="fa fa-sort"></i></th>
+        <th>Wins</th>
+        <th>Looses</th>
+        <th>Ties</th>
+        <th (click)="sort('score')">Score&nbsp;<i class="fa fa-sort"></i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let participant of participants | orderBy: key: sortReverse | paginate: {itemsPerPage: resultsPerPage, currentPage: currentIndex}; let i = index;">
+        <td>{{participant.team_name}}</td>
+        <td>{{participant.wins}}</td>
+        <td>{{participant.losses}}</td>
+        <td>{{participant.ties}}</td>
+        <td>{{participant.score}}</td>
+        <td><input type="checkbox" class="form-check-input" value={{participant.team_name}} (click) = "pairingCheckbox($event, participant,i)"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="enablePairing">
+    <label for="pairing-teams">Teams chosen for pairing:</label>
+    <br>
+    <p class="form-check-inline"> <b>{{pairingTeamOne}}</b></p>
+    <div class="form-check-inline" *ngFor="let declaration of PairingDeclarations">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" name="teamoneoptradio"
+        (change)="radioChangeHandler($event)" value="teamOne{{declaration}}">{{declaration}}
+      </label>
+    </div>
+    <br>
+    <p class="form-check-inline"> <b>{{pairingTeamTwo}}</b></p>
+    <div class="form-check-inline" *ngFor="let declaration of PairingDeclarations">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" name="teamtwooptradio"
+        (change)="radioChangeHandler($event)" value="teamTwo{{declaration}}">{{declaration}}
+      </label>
+    </div>
+    <button class="btn btn-primary pairing-button" (click)="submitPairingResults()">pair teams</button>
+  </div>
+  <div class="pagination-position" *ngIf="dataFound">
+    <pagination-controls (pageChange)="currentIndex = $event"></pagination-controls>
+  </div>
+</div>
