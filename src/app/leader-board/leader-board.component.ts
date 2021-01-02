@@ -44,6 +44,8 @@ export class LeaderBoardComponent implements OnInit {
   getAllUsers() {
     this.participantsService.getParticipants().subscribe(response => {
       this.participants = response;
+      // json = [...new Map(response.map(item => [item["team_name"], item])).values()] --- to remove duplicate elemnts in array
+      console.log(this.participants);
       this.dataFound = true;
     }, error => {
       this.errmsg = error;
