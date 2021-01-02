@@ -18,17 +18,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSearch(searchParam) {
-    this.participantsService.getParticipant(searchParam).subscribe(response => {
-      this.participants = response;
-      this.searchFlag = true;
-      console.log(this.participants);
-    }, error => {
-      this.errmsg = error;
-      console.log(this.errmsg);
-    });
-  }
-
 }
 
 
