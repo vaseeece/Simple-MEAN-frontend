@@ -57,13 +57,11 @@ export class LeaderBoardComponent implements OnInit {
     this.participantsService.getParticipants().subscribe(response => {
       this.participants = response;
       // json = [...new Map(response.map(item => [item["team_name"], item])).values()] --- to remove duplicate elemnts in array
-      console.log(this.participants);
       this.dataFound = true;
     }, error => {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
     });
   }
 
@@ -79,7 +77,6 @@ export class LeaderBoardComponent implements OnInit {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
     });
   }
 
@@ -106,7 +103,6 @@ export class LeaderBoardComponent implements OnInit {
         this.errorFlag = true;
         this.showAlert = true;
         this.errmsg = error;
-        console.log(this.errmsg);
       });
     }
   }
@@ -129,7 +125,7 @@ export class LeaderBoardComponent implements OnInit {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
+     
     });
   }
 
@@ -179,9 +175,7 @@ export class LeaderBoardComponent implements OnInit {
   }
 
   deleteTeamDetails(team) {
-    console.log(team);
     this.deleteingTeam = team;
-    console.log('deleteTeamArray', this.deleteingTeam);
   }
 
   deleteTeam(teamId) {
@@ -197,9 +191,8 @@ export class LeaderBoardComponent implements OnInit {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
+     
     });
-    console.log('delete team id',teamId);
   }
 
   radioChangeHandler(radioValue) {
@@ -241,10 +234,8 @@ export class LeaderBoardComponent implements OnInit {
       this.pairingTeamsDetails[1].ties = this.pairingTeamsDetails[1].ties + 1;
       this.pairingTeamsDetails[1].score = this.pairingTeamsDetails[1].score + this.pointsForTie;
     }
-    console.log('Results of pairing', this.pairingTeamsDetails);
 
     this.participantsService.updateTeamValues(this.pairingTeamsDetails[0]._id, this.pairingTeamsDetails[0]).subscribe(response => {
-      console.log('updatedResponse', response);
       if(response) {
         this.updateSuccess = true;
         this.showAlert = true;
@@ -256,11 +247,10 @@ export class LeaderBoardComponent implements OnInit {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
+     
     });
 
     this.participantsService.updateTeamValues(this.pairingTeamsDetails[1]._id, this.pairingTeamsDetails[1]).subscribe(response => {
-      console.log('updatedResponse', response);
       if(response) {
         this.updateSuccess = true;
         this.showAlert = true;
@@ -272,7 +262,7 @@ export class LeaderBoardComponent implements OnInit {
       this.errorFlag = true;
       this.showAlert = true;
       this.errmsg = error;
-      console.log(this.errmsg);
+     
     });
 
     this.getAllUsersScoreSorted();
