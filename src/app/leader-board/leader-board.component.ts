@@ -14,6 +14,11 @@ export class LeaderBoardComponent implements OnInit {
   errmsg;
   newTeam: ParticipantsInterface;
   dataFound: boolean;
+  createSuccess: boolean;
+  updateSuccess: boolean;
+  deleteSuccess: boolean;
+  showAlert: boolean;
+  errorFlag: boolean;
   searchParam: string;
   key: string = 'team_name';
   sortReverse: boolean = false;
@@ -34,7 +39,13 @@ export class LeaderBoardComponent implements OnInit {
     'Loose',
     'Tie'
   ];
-  deleteingTeam = {};
+  deleteingTeam = {
+    _id: '',
+    team_name: '',
+    wins: '',
+    losses: '',
+    ties: ''
+  };
 
   constructor(private participantsService: ParticipantsService) { }
 
@@ -49,6 +60,8 @@ export class LeaderBoardComponent implements OnInit {
       console.log(this.participants);
       this.dataFound = true;
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });
@@ -63,6 +76,8 @@ export class LeaderBoardComponent implements OnInit {
       this.dataFound = true;
       this.sort('score');
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });
@@ -80,9 +95,16 @@ export class LeaderBoardComponent implements OnInit {
     }
     if (this.newTeam) {
       this.participantsService.newTeamEntry(this.newTeam).subscribe(response => {
+        if(response) {
+          this.newTeamName = '';
+          this.createSuccess = true;
+          this.showAlert = true;
+        }
         this.participants = response;
         this.getAllUsers();
       }, error => {
+        this.errorFlag = true;
+        this.showAlert = true;
         this.errmsg = error;
         console.log(this.errmsg);
       });
@@ -92,7 +114,20 @@ export class LeaderBoardComponent implements OnInit {
   onSearch(searchParam) {
     this.participantsService.getParticipant(searchParam).subscribe(response => {
       this.participants = response;
+      this.searchParam = '';
+      if(!response[0]) {
+        this.errorFlag = true;
+        this.showAlert = true;
+        this.errmsg = 'No data found';
+      }
+      if(response[0]) {
+        this.errorFlag = false;
+        this.showAlert = false;
+        this.errmsg = '';
+      }
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });
@@ -101,6 +136,14 @@ export class LeaderBoardComponent implements OnInit {
   sort(key) {
     this.key = key;
     this.sortReverse = !this.sortReverse;
+  }
+
+  dismissAlert() {
+    this.showAlert = false;
+    this.createSuccess = false;
+    this.updateSuccess = false;
+    this.deleteSuccess = false;
+    this.errorFlag = false;
   }
 
   dropDownHandler(dropDownValue) {
@@ -143,8 +186,16 @@ export class LeaderBoardComponent implements OnInit {
 
   deleteTeam(teamId) {
     this.participantsService.deleteTeamValue(teamId).subscribe(response => {
+      if(response) {
+        this.deleteSuccess = true;
+        this.showAlert = true;
+      }
       this.participants = response;
+      this.getAllUsers();
+      
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });
@@ -194,14 +245,32 @@ export class LeaderBoardComponent implements OnInit {
 
     this.participantsService.updateTeamValues(this.pairingTeamsDetails[0]._id, this.pairingTeamsDetails[0]).subscribe(response => {
       console.log('updatedResponse', response);
+      if(response) {
+        this.updateSuccess = true;
+        this.showAlert = true;
+      }
+      if(!response) {
+        this.updateSuccess = false;
+      }
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });
 
     this.participantsService.updateTeamValues(this.pairingTeamsDetails[1]._id, this.pairingTeamsDetails[1]).subscribe(response => {
       console.log('updatedResponse', response);
+      if(response) {
+        this.updateSuccess = true;
+        this.showAlert = true;
+      }
+      if(!response) {
+        this.updateSuccess = false;
+      }
     }, error => {
+      this.errorFlag = true;
+      this.showAlert = true;
       this.errmsg = error;
       console.log(this.errmsg);
     });

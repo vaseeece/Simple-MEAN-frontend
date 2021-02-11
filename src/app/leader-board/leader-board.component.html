@@ -18,6 +18,26 @@
 
 <div class="container top-position">
 
+  <!-- Alert -->
+  <div [ngClass]="{'alert alert-primary alert-dismissible fade show': updateSuccess, 
+                   'alert alert-success alert-dismissible fade show': createSuccess, 
+                   'alert alert-warning alert-dismissible fade show': deleteSuccess,
+                   'alert alert-danger alert-dismissible fade show': errorFlag}" 
+                   role="alert" *ngIf="showAlert">
+
+    <button type="button" class="close" (click)="dismissAlert()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+                   
+    <strong *ngIf="createSuccess">The team has been inserted successfully</strong>
+    <strong *ngIf="updateSuccess">The pairing results has been submitted successfully</strong>
+    <strong *ngIf="deleteSuccess">The team entry has been deleted successfully</strong>
+    <strong *ngIf="errorFlag">{{errmsg}}</strong>
+    !!
+  </div>
+
+  <br>
+
   <div *ngIf="dataFound">
     <label for="sel1">Results per page:</label>
     <select class="btn btn-light" id="sel1" (change)="dropDownHandler($event)">
@@ -27,7 +47,6 @@
       <option value="40">40</option>
     </select>
   </div>
-
 
   <!-- Delete Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-danger" (click)="deleteTeam(deleteingTeam._id)">Yes Delete</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteTeam(deleteingTeam._id)">Yes Delete</button>
       </div>
     </div>
   </div>
