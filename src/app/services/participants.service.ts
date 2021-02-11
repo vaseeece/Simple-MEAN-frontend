@@ -28,6 +28,10 @@ export class ParticipantsService {
     return this.http.put<ParticipantsInterface>(`${this.url}/${teamId}`, updatedTeamData).pipe(retry(1), catchError(this.handleError));
   };
 
+  deleteTeamValue(teamId): Observable<ParticipantsInterface> {
+    return this.http.delete<ParticipantsInterface>(`${this.url}/${teamId}`).pipe(retry(1), catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

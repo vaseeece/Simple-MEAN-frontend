@@ -28,19 +28,40 @@
     </select>
   </div>
 
+
+  <!-- Delete Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to this Team's Entry?</p>
+        <p>Team Name: {{deleteingTeam.team_name}}</p>  
+        <p>Wins: {{deleteingTeam.wins}}</p> 
+        <p>Losses: {{deleteingTeam.losses}}</p>     
+        <p>Ties: {{deleteingTeam.ties}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" (click)="deleteTeam(deleteingTeam._id)">Yes Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <table class="table table-striped top-position" *ngIf="dataFound">
     <thead>
-      <tr>
+      <tr style="text-align: center;">
         <th (click)="sort('team_name')">Team Name&nbsp;<i class="fa fa-sort"></i></th>
         <th>Wins</th>
         <th>Looses</th>
         <th>Ties</th>
         <th (click)="sort('score')">Score&nbsp;<i class="fa fa-sort"></i></th>
-        <th></th>
+        <th>Select Teams</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
-      <tr
+      <tr style="text-align: center;"
         *ngFor="let participant of participants | orderBy: key: sortReverse | paginate: {itemsPerPage: resultsPerPage, currentPage: currentIndex}; let i = index;">
         <td>{{participant.team_name}}</td>
         <td>{{participant.wins}}</td>
@@ -48,9 +69,11 @@
         <td>{{participant.ties}}</td>
         <td>{{participant.score}}</td>
         <td><input type="checkbox" class="form-check-input" value={{participant.team_name}} (click) = "pairingCheckbox($event, participant,i)"></td>
+        <button class="delete-button-space btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal" (click)="deleteTeamDetails(participant)">Delete Entry</button> 
       </tr>
     </tbody>
   </table>
+  <br>
   <div *ngIf="enablePairing">
     <label for="pairing-teams">Teams chosen for pairing:</label>
     <br>
@@ -70,6 +93,7 @@
       </label>
     </div>
     <button class="btn btn-primary pairing-button" (click)="submitPairingResults()">pair teams</button>
+    <br>
   </div>
   <div class="pagination-position" *ngIf="dataFound">
     <pagination-controls (pageChange)="currentIndex = $event"></pagination-controls>

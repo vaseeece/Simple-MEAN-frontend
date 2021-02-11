@@ -12,9 +12,17 @@
 }
 
 .pairing-button {
-  margin-left: 1005px;
+  margin-left: 60px;
+  position: absolute;
+  margin-top: -30px;
 }
 
 .pairing-border {
   border:4px dotted powderblue;
+}
+
+.delete-button-space {
+  position: absolute;
+  margin-top: 6px;
+  margin-left: -48px;
 }

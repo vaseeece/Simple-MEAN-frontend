@@ -34,6 +34,7 @@ export class LeaderBoardComponent implements OnInit {
     'Loose',
     'Tie'
   ];
+  deleteingTeam = {};
 
   constructor(private participantsService: ParticipantsService) { }
 
@@ -132,6 +133,22 @@ export class LeaderBoardComponent implements OnInit {
       }
     }
 
+  }
+
+  deleteTeamDetails(team) {
+    console.log(team);
+    this.deleteingTeam = team;
+    console.log('deleteTeamArray', this.deleteingTeam);
+  }
+
+  deleteTeam(teamId) {
+    this.participantsService.deleteTeamValue(teamId).subscribe(response => {
+      this.participants = response;
+    }, error => {
+      this.errmsg = error;
+      console.log(this.errmsg);
+    });
+    console.log('delete team id',teamId);
   }
 
   radioChangeHandler(radioValue) {
