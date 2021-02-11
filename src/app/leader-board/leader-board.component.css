@@ -26,3 +26,12 @@
   margin-top: 6px;
   margin-left: -48px;
 }
+
+.loader {
+  width: 250px;
+  position: absolute;
+  margin-top: 200px;
+  height: 250px;
+  border-width: 15px;
+  border-style: dotted;
+}
