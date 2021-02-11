@@ -9,7 +9,7 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class ParticipantsService {
 
-  private url: string = 'http://localhost:4400/participants';
+  private url: string = 'http://ec2-13-58-249-144.us-east-2.compute.amazonaws.com:4400/participants';
   constructor(private http: HttpClient) { }
 
   getParticipants(): Observable<ParticipantsInterface> {
